@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future & Friendship Predictor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            text-align: center;
+            position: relative;
+        }
+
+        /* Back Arrow Styling */
+        .back-arrow {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #00ffcc;
+            cursor: pointer;
+            transition: 0.3s;
+            background: none;
+            border: none;
+            outline: none;
+        }
+
+        .back-arrow:hover {
+            color: #0099ff;
+            transform: scale(1.2);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #00ffcc;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #00ffcc;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #00ffcc;
+            box-shadow: 0 0 8px rgba(0, 255, 204, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00ffcc, #0099ff);
+            color: #000;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.5);
+        }
+
+        #loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #00ffcc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #result-box {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid #00ffcc;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .roman-urdu {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .english {
+            font-size: 14px;
+            color: #00ffcc;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .share-btn {
+            background: #25d366;
+            color: white;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Back Button Arrow -->
+    <button id="back-btn" class="back-arrow" onclick="goBack()">←</button>
+
+    <h1>Future Predictor 🔮</h1>
+    <p class="subtitle">Check your real bonding & shocking future timeline!</p>
+
+    <div id="input-form">
+        <div class="form-group">
+            <label>Your Name / Aapka Naam</label>
+            <input type="text" id="name1" placeholder="Enter your name...">
+        </div>
+
+        <div class="form-group">
+            <label>Partner/Friend's Name / Dosra Naam</label>
+            <input type="text" id="name2" placeholder="Enter their name...">
+        </div>
+
+        <div class="form-group">
+            <label>Relationship Type / Rishta Kya Hai?</label>
+            <select id="relation">
+                <option value="boy_friend">Boy Best Friend / Dost 👦</option>
+                <option value="boy_cousin">Boy Cousin 🧑</option>
+                <option value="girl_cousin">Girl Cousin 👧</option>
+                <option value="girlfriend">Girlfriend / Crush ❤️</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>How long do you know each other? / Kab se sath ho?</label>
+            <select id="duration">
+                <option value="1">Less than 1 year / Kuch mahino se</option>
+                <option value="3">1 to 3 Years / Thoda purana rishta hai</option>
+                <option value="5">More than 3 Years / Bachpan se jante hain</option>
+            </select>
+        </div>
+
+        <button class="btn" onclick="startPrediction()">Predict Our Future 🚀</button>
+    </div>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading">
+        <div class="spinner"></div>
+        <p style="color: #00ffcc; font-weight: bold;">Scanning Future Timeline...</p>
+    </div>
+
+    <!-- RESULT DISPLAY -->
+    <div id="result-box">
+        <h3 style="color: #ff3366; margin-bottom: 10px;">⚠️ Final Verdict:</h3>
+        <p class="roman-urdu" id="urdu-text"></p>
+        <p class="english" id="eng-text"></p>
+        
+        <button class="btn share-btn" onclick="window.print()">📸 Take Screenshot / Share</button>
+    </div>
+</div>
+
+<script>
+const boyAnswers = [
+    {
+        urdu: "Bhai hai tumhara! Agar tum ne kisi se panga liya, toh yeh banda pehle dande lekar khara hoga. Par bill ke waqt iska phone silently silent ho jata hai.",
+        eng: "He's your brother for life! If you get into a fight, he'll be there first with backup. But when the restaurant bill arrives, his phone suddenly goes on silent mode."
+    },
+    {
+        urdu: "Is par zyada bharosa mat karo, yeh tumhare dusre doston mein tumhari hi burai kar ke khud ko sharif aur cool banta hai!",
+        eng: "Don't trust him blindly! He secretly talks trash about you to other friends just to make himself look cool and innocent."
+    },
+    {
+        urdu: "Yeh dost agle 2 saal mein tumhare paise lekar bhaagne wala hai! Isay muft ki chai pilana band karo warna pachtao ge.",
+        eng: "This guy is going to run away with your money within the next 2 years! Stop buying him free tea or you'll regret it deeply."
+    }
+];
+
+const girlAnswers = [
+    {
+        urdu: "Ghar wale mofat mein larrayian kar rahe hain, tum dono ka future set hai! Bas thodi himmat karo aur baat agay barhao.",
+        eng: "The families are fighting for no reason, your future together is totally set! Just gather some courage and make the move."
+    },
+    {
+        urdu: "Yeh tumhari saari khufia baatein janti hai. Is se panga mat lena, warna tumhare ghar walon tak tumhare saare raaz pohnchne mein 2 minute lagenge.",
+        eng: "She knows all your deepest secrets. Never mess with her, otherwise it will take exactly 2 minutes for your parents to know everything about you."
+    },
+    {
+        urdu: "Nakhre bohot hain is ke! Tumhara bacha-kucha pocket money aur saari kamai isi ke juice, burgers aur chaat par kharch hone wali hai.",
+        eng: "She has massive tantrums! All your savings and pocket money are destined to be spent on her expensive juices, burgers, and snacks."
+    }
+];
+
+function startPrediction() {
+    let n1 = document.getElementById('name1').value.trim();
+    let n2 = document.getElementById('name2').value.trim();
+
+    if(n1 === "" || n2 === "") {
+        alert("Please enter both names first! / Pehle dono naam likho!");
+        return;
+    }
+
+    document.getElementById('input-form').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('back-btn').style.display = 'none'; // Loading me hide rahega
+
+    setTimeout(function() {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('result-box').style.display = 'block';
+        document.getElementById('back-btn').style.display = 'block'; // Result screen par show hoga
+
+        calculateResult(n1, n2);
+    }, 4000); 
+}
+
+function calculateResult(name1, name2) {
+    let relation = document.getElementById('relation').value;
+    let duration = parseInt(document.getElementById('duration').value);
+    
+    let totalLength = name1.length + name2.length + duration;
+    let selectedAnswer;
+
+    if(relation === 'girl_cousin' || relation === 'girlfriend') {
+        let index = totalLength % girlAnswers.length;
+        selectedAnswer = girlAnswers[index];
+    } else {
+        let index = totalLength % boyAnswers.length;
+        selectedAnswer = boyAnswers[index];
+    }
+
+    document.getElementById('urdu-text').innerText = selectedAnswer.urdu;
+    document.getElementById('eng-text').innerText = "Translation: " + selectedAnswer.eng;
+}
+
+// Back Button Function to reset form
+function goBack() {
+    document.getElementById('result-box').style.display = 'none';
+    document.getElementById('back-btn').style.display = 'none';
+    document.getElementById('input-form').style.display = 'block';
+    
+    // Inputs saaf karne ke liye
+    document.getElementById('name1').value = "";
+    document.getElementById('name2').value = "";
+}
+</script>
+
+</body>
+</html>
