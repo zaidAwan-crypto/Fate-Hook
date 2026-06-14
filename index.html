@@ -270,12 +270,12 @@ function startPrediction() {
 
     document.getElementById('input-form').style.display = 'none';
     document.getElementById('loading').style.display = 'block';
-    document.getElementById('back-btn').style.display = 'none'; // Loading me hide rahega
+    document.getElementById('back-btn').style.display = 'none'; 
 
     setTimeout(function() {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('result-box').style.display = 'block';
-        document.getElementById('back-btn').style.display = 'block'; // Result screen par show hoga
+        document.getElementById('back-btn').style.display = 'block'; 
 
         calculateResult(n1, n2);
     }, 4000); 
@@ -300,17 +300,18 @@ function calculateResult(name1, name2) {
     document.getElementById('eng-text').innerText = "Translation: " + selectedAnswer.eng;
 }
 
-// Back Button Function to reset form
 function goBack() {
     document.getElementById('result-box').style.display = 'none';
     document.getElementById('back-btn').style.display = 'none';
     document.getElementById('input-form').style.display = 'block';
     
-    // Inputs saaf karne ke liye
     document.getElementById('name1').value = "";
     document.getElementById('name2').value = "";
 }
 </script>
+
+<!-- Adsterra Social Bar Ad Integration -->
+<script src="https://pl29744814.effectivecpmnetwork.com/92/29/ae/9229aebafaeada61d93beb47f1568ee0.js"></script>
 
 </body>
 </html>
